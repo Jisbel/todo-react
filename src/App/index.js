@@ -1,9 +1,10 @@
 import React from 'react';
-import {TodoCounter} from './TodoCounter';
-import {TodoSearch} from './TodoSearch';
-import {TodoList} from './TodoList';
-import { TodoItem } from './TodoItem';
-import { CreateTodoButton } from './CreateTodoButton';
+import { TodoCounter } from '../TodoCounter';
+import { TodoSearch } from '../TodoSearch';
+import { TodoList } from '../TodoList';
+import { TodoItem } from '../TodoItem';
+import { CreateTodoButton } from '../CreateTodoButton';
+import { useLocalStorage } from './useLocalStorage';
 
 // const defaultTodos = [
 //   { text: 'Cortar cebolla', completed: true }, 
@@ -16,31 +17,9 @@ import { CreateTodoButton } from './CreateTodoButton';
 // localStorage.setItem(itemName, JSON.stringify(defaultTodos));
 // localStorage.remoceItem(itemName);
 
-function useLocalStorage(itemName, initialValue) {
-  const localStorageItem = localStorage.getItem(itemName);
-  
-  let parsedItem;
-
-  if (!localStorageItem) {
-    localStorage.setItem(itemName, JSON.stringify(initialValue));
-    parsedItem = initialValue;
-  } else {
-    parsedItem =  JSON.parse(localStorageItem);
-  }
-
-  const [item, setItem] = React.useState(parsedItem);
-
-  const saveItem = (newItem) => {
-    localStorage.setItem(itemName, JSON.stringify(newItem));  
-    setItem(newItem);
-  };
-
-  return [item, saveItem];
-}
-
 function App() {
   const [todos, saveTodos] = useLocalStorage('TODOS_V1', []);
-  const [searchValue, setsearchValue] = React.useState( '' );
+  const [searchValue, setsearchValue] = React.useState('');
 
   const completedTodos = todos.filter(
     todo => !!todo.completed
